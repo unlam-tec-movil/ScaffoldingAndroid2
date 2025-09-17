@@ -14,15 +14,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
@@ -32,12 +31,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
+import ar.edu.unlam.mobile.scaffolding.ui.home.HOME_SCREEN_ROUTE
+import ar.edu.unlam.mobile.scaffolding.ui.home.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.FormScreen
-import ar.edu.unlam.mobile.scaffolding.ui.screens.HOME_SCREEN_ROUTE
-import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.UserScreen
 import ar.edu.unlam.mobile.scaffolding.ui.theme.ScaffoldingV2Theme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -57,7 +57,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun MainScreen() {
     // Controller es el elemento que nos permite navegar entre pantallas. Tiene las acciones
@@ -65,6 +64,12 @@ fun MainScreen() {
     // a través del back stack
     val controller = rememberNavController()
     val snackBarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val launchSnackbar: (String) -> Unit = { message ->
+        scope.launch {
+            snackBarHostState.showSnackbar(message)
+        }
+    }
     Scaffold(
         bottomBar = { BottomBar(controller = controller) },
         floatingActionButton = {
@@ -84,7 +89,7 @@ fun MainScreen() {
                         )
                     } else {
                         ButtonDefaults.textButtonColors(
-                            contentColor = MaterialTheme.colorScheme.inversePrimary
+                            contentColor = MaterialTheme.colorScheme.inversePrimary,
                         )
                     }
 
@@ -112,7 +117,10 @@ fun MainScreen() {
             // Por parámetro recibe la ruta que se utilizará para navegar a dicho destino.
             composable("home") {
                 // Home es el componente en sí que es el destino de navegación.
-                HomeScreen(modifier = Modifier.padding(paddingValue))
+                HomeScreen(
+                    launchSnackbar,
+                    modifier = Modifier.padding(paddingValue),
+                )
             }
             composable("form") {
                 FormScreen(
@@ -128,6 +136,5 @@ fun MainScreen() {
                 UserScreen(userId = id, modifier = Modifier.padding(paddingValue))
             }
         }
-        Text("holas")
     }
 }
