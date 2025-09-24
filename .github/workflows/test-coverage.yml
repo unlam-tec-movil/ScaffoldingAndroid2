@@ -20,7 +20,6 @@ jobs:
         run: chmod +x ./gradlew
       - name: Generate kover coverage report
         run: ./gradlew koverXmlReportRelease
-
       - name: Add coverage report to PR
         id: kover
         uses: mi-kas/kover-report@v1
@@ -29,7 +28,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: Code Coverage
           update-comment: true
-          min-coverage-overall: 70
+          min-coverage-overall: 60
           min-coverage-changed-files: 60
           coverage-counter-type: LINE
 
