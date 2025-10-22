@@ -36,6 +36,7 @@ import ar.edu.unlam.mobile.scaffolding.ui.screens.FormScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HOME_SCREEN_ROUTE
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.UserScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.robot.RobotScreen
 import ar.edu.unlam.mobile.scaffolding.ui.theme.ScaffoldingV2Theme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -89,7 +90,9 @@ fun MainScreen() {
 
                 Snackbar(
                     modifier =
-                        Modifier.border(2.dp, MaterialTheme.colorScheme.secondary).padding(12.dp),
+                        Modifier
+                            .border(2.dp, MaterialTheme.colorScheme.secondary)
+                            .padding(12.dp),
                     action = {
                         TextButton(
                             onClick = { if (isError) data.dismiss() else data.performAction() },
@@ -114,10 +117,7 @@ fun MainScreen() {
                 HomeScreen(modifier = Modifier.padding(paddingValue))
             }
             composable("form") {
-                FormScreen(
-                    modifier = Modifier.padding(paddingValue),
-                    snackbarHostState = snackBarHostState,
-                )
+                RobotScreen()
             }
             composable(
                 route = "user/{id}",
