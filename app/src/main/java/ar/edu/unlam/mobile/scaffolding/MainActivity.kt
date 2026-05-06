@@ -35,6 +35,8 @@ import ar.edu.unlam.mobile.scaffolding.ui.screens.FormScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HOME_SCREEN_ROUTE
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.UserScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.robotadmin.ROBOT_ADMIN_SCREEN_ROUTE
+import ar.edu.unlam.mobile.scaffolding.ui.screens.robotadmin.RobotAdminScreen
 import ar.edu.unlam.mobile.scaffolding.ui.theme.ScaffoldingV2Theme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -121,6 +123,9 @@ fun MainScreen() {
                     modifier = Modifier.padding(paddingValue),
                     snackbarHostState = snackBarHostState,
                 )
+            }
+            composable(ROBOT_ADMIN_SCREEN_ROUTE) {
+                RobotAdminScreen(modifier = Modifier.padding(paddingValue))
             }
             composable(
                 route = "user/{id}",
